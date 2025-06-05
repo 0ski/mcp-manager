@@ -18,7 +18,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "gql:codegen": "graphql-codegen --config codegen.yml"
+    "codegen": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
     "@graphql-codegen/cli": "^5.0.6",
@@ -26,13 +26,20 @@
     "@graphql-codegen/typescript-graphql-request": "^6.3.0",
     "@graphql-codegen/typescript-operations": "^4.6.1",
     "@nestjs/common": "^11.0.1",
+    "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
     "@nestjs/graphql": "^13.1.0",
     "@nestjs/mercurius": "^13.1.0",
     "@nestjs/platform-express": "^11.0.1",
+    "@nestjs/platform-fastify": "^11.1.2",
+    "@types/ioredis": "^5.0.0",
     "graphql": "^16.11.0",
-    "graphql-request": "^7.2.0",
+    "graphql-request": "^6.1.0",
+    "graphql-type-json": "^0.3.2",
+    "ioredis": "^5.6.1",
     "mercurius": "^16.1.0",
+    "mqemitter-redis": "^7.0.0",
+    "redis": "^5.5.5",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1"
   },

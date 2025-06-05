@@ -1,0 +1,48 @@
+query serviceDeployments ($serviceId: String!) {
+  service(id: $serviceId) {
+    id
+    name
+    icon
+    projectId
+    createdAt
+    updatedAt
+    deletedAt
+    templateServiceId
+    templateThreadSlug
+    project {
+      id
+      name
+      isPublic
+    }
+    deployments(first: 100) {
+      edges {
+        cursor
+        node {
+          id
+          status
+          createdAt
+          updatedAt
+          staticUrl
+          url
+          environmentId
+          canRedeploy
+          canRollback
+          snapshotId
+          deploymentStopped
+          suggestAddServiceDomain
+          creator {
+            avatar
+            email
+            name
+          }
+        }
+      }
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      }
+    }
+  }
+}

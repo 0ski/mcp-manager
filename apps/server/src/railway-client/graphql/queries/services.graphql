@@ -1,0 +1,60 @@
+query services($projectId: String!, $after: String, $first: Int) {
+  project(id: $projectId) {
+    id
+    name
+    services(after: $after, first: $first) {
+      edges {
+        cursor
+        node {
+          ...ServiceWithDeployment
+        }
+      }
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      }
+    }
+  }
+}
+
+fragment ServiceBasic on Service {
+  id
+  name
+}
+
+fragment ServiceWithDeployment on Service {
+  ...ServiceBasic
+  project {
+    id
+    name
+    isPublic
+  }
+  deployments(first: 1) {
+    edges {
+      node {
+        id
+        status
+      }
+    }
+  }
+  serviceInstances(first: 10) {
+    edges {
+      node {
+        id
+        domains {
+          serviceDomains {
+            domain
+            targetPort
+          }
+        }
+        source {
+          image
+          repo
+        }
+      }
+    }
+  }
+  featureFlags
+}

@@ -1,0 +1,7 @@
+mutation stopMcp($serviceId: ID!) {
+  stopService(
+    input: {
+      serviceId: $serviceId
+    }
+  )
+}

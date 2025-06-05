@@ -1,10 +1,32 @@
 import { Module } from '@nestjs/common';
+import { GraphQLModule } from '@nestjs/graphql';
+import { MercuriusDriverConfig, MercuriusDriver } from '@nestjs/mercurius';
+import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ApiModule } from './api/api.module';
+import { TypedConfigService } from './typed-config.service';
+import { RailwayClientService } from './railway-client';
 
 @Module({
-  imports: [],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+    }),
+    GraphQLModule.forRoot<MercuriusDriverConfig>({
+      driver: MercuriusDriver,
+      autoSchemaFile: true,
+      subscription: {
+        emitter: require('mqemitter-redis')({
+          port: 6379,
+          host: '127.0.0.1',
+        }),
+      },
+      graphiql: true,
+    }),
+    ApiModule,
+  ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [TypedConfigService, RailwayClientService],
 })
 export class AppModule {}

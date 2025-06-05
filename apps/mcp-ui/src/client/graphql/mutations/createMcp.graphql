@@ -1,0 +1,10 @@
+mutation createMcp($input: CreateServiceInput!) {
+  createService(input: $input) {
+    status
+    serviceId
+    name
+    environmentVariables
+		portNumber    
+    domain
+  }
+} 

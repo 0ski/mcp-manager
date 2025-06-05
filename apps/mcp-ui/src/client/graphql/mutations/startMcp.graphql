@@ -1,0 +1,7 @@
+mutation startMcp($serviceId: ID!) {
+  startService(
+    input: {
+      serviceId: $serviceId
+    }
+  )
+}

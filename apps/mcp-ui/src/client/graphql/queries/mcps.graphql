@@ -1,0 +1,11 @@
+query mcps {
+  services {
+    serviceId
+    name
+    status
+    githubUrl
+    environmentVariables
+    portNumber
+    domain
+  }
+}

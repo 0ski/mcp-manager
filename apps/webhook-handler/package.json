@@ -1,25 +1,21 @@
 {
   "name": "webhook-handler",
-  "version": "1.0.0",
-  "description": "This project was bootstrapped with Fastify-CLI.",
-  "main": "app.js",
-  "directories": {
-    "test": "test"
-  },
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
   "scripts": {
-    "test": "node --test test/**/*.test.js",
-    "start": "fastify start -l info app.js",
-    "dev": "fastify start -w -l info -P app.js --port 3002"
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx watch index.ts"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/node": "^22.15.29"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
   "dependencies": {
-    "fastify": "^5.0.0",
-    "fastify-plugin": "^5.0.0",
-    "@fastify/autoload": "^6.0.0",
-    "@fastify/sensible": "^6.0.0",
-    "fastify-cli": "^7.4.0"
-  },
-  "devDependencies": {}
+    "fastify": "^5.3.3",
+    "tsx": "^4.19.4"
+  }
 }

@@ -1,10 +1,10 @@
 overwrite: true
 schema:
-  - https://backboard.railway.app/graphql/v2
+  - http://localhost:3001/graphql
 documents: 
-  - "src/railway-client/graphql/**/*.graphql"
+  - "src/client/graphql/**/*.graphql"
 generates:
-  src/railway-client/generated/graphql.ts:
+  src/client/graphql.ts:
     plugins:
       - "typescript"
       - "typescript-operations"
