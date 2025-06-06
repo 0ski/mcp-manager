@@ -16,15 +16,15 @@ export class AppController {
       const latestDeployment = railwayService.deployments.edges[0]?.node;
 
       if (domain && latestDeployment?.status === 'SUCCESS') {
-        acc.mcpServers.push({
+        acc.mcpServers[railwayService.name.toLowerCase()] ={
           type: 'sse',
-          url: `${domain}/sse`,
-        });
+          url: `https://${domain}/sse`,
+        };
       }
 
       return acc;
     }, {
-      mcpServers: [] as { type: string; url: string }[],
+      mcpServers: {} as Record<string, { type: string; url: string }>,
     });
 
     return JSON.stringify(mcpConfig);
