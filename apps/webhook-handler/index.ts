@@ -6,14 +6,18 @@ const port = process.env.PORT ? parseInt(process.env.PORT) : 3002;
 
 const server = fastify();
 
+console.log(`Connecting to Redis at ${process.env.REDIS_HOST || 'localhost'}:${process.env.REDIS_PORT || 6379}`);
 const mqemitter = MQEmitterRedis({
   ...(process.env.REDIS_USER ? {username: process.env.REDIS_USER} : {}),
   ...(process.env.REDIS_PASSWORD ? {password: process.env.REDIS_PASSWORD} : {}),
   port: process.env.REDIS_PORT ? parseInt(process.env.REDIS_PORT, 10) : 6379,
   host: process.env.REDIS_HOST || 'localhost',
 });
+console.log(`Connected to Redis.`);
 
+console.log(`Setting up server.`);
 server.register((fastify, opts) => {
+  console.log(`Setting up parser.`);
   fastify.addContentTypeParser('application/json', function (request, payload, done) {
     jsonParser(payload, function (err, body) {
       done(err, body)
@@ -21,7 +25,6 @@ server.register((fastify, opts) => {
   })
 
   fastify.post('/', async (request, reply) => {
-
     if (
       typeof request.body === 'object' &&
       request.body !== null &&
@@ -48,6 +51,7 @@ server.register((fastify, opts) => {
   });
 });
 
+console.log(`Starting server.`);
 server.listen({ port }, (err, address) => {
   if (err) {
     console.error(err);

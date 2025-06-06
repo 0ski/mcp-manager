@@ -1,0 +1,12 @@
+{
+    "servers": {
+        "fetch": {
+            "type": "sse",
+            "url": "https://fetch-production-4e94.up.railway.app/sse"
+        },
+        "time": {
+            "type": "sse",
+            "url": "https://time-production-18ad.up.railway.app/sse"
+        }
+    }
+}
