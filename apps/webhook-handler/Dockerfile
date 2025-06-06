@@ -12,13 +12,7 @@ COPY tsconfig*.json ./
 RUN bun install
 
 # Copy source code
-COPY index.ts index.ts
-
-# Build the application
-RUN bun run build
-
-# Create app directory
-WORKDIR /app
+COPY index.ts ./
 
 # Expose port
 EXPOSE 8080
