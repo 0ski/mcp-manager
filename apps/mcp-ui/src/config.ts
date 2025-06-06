@@ -1,5 +1,5 @@
 const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
-const NEXT_PUBLIC_API_WS = process.env.NEXT_PUBLIC_API_WS || 'ws://localhost:3001'
+const NEXT_PUBLIC_API_WS = process.env.NEXT_PUBLIC_API_WS || 'wss://mcp-manager-server-production.up.railway.app'
 
 export const config = {
   NEXT_PUBLIC_API_URL,
