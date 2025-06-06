@@ -56,7 +56,7 @@ server.register((fastify, opts) => {
 });
 
 console.log(`Starting server. Port: ${port}`);
-server.listen({ port }, (err, address) => {
+server.listen({ host: '::', port }, (err, address) => {
   if (err) {
     console.error(err);
     process.exit(1);
