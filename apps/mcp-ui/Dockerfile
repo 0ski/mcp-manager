@@ -7,7 +7,7 @@ WORKDIR /app
 
 # Install dependencies based on the preferred package manager
 COPY package*.json ./
-RUN bun install --only=production
+RUN bun install
 
 # Rebuild the source code only when needed
 FROM base AS builder

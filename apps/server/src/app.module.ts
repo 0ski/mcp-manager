@@ -18,6 +18,8 @@ import { RailwayClientService } from './railway-client';
       autoSchemaFile: true,
       subscription: {
         emitter: require('mqemitter-redis')({
+          ...(process.env.REDIS_USER ? {user: process.env.REDIS_USER} : {}),
+          ...(process.env.REDIS_PASSWORD ? {user: process.env.REDIS_PASSWORD} : {}),
           port: process.env.REDIS_PORT ? parseInt(process.env.REDIS_PORT, 10) : 6379,
           host: process.env.REDIS_HOST || 'localhost',
         }),
