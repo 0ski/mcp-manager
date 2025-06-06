@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "dev": "tsx watch index.ts"
+    "dev": "tsx watch index.ts",
+    "start": "bun index.ts"
   },
   "devDependencies": {
     "@types/bun": "latest",

@@ -5,6 +5,14 @@
   "workspaces": [
     "apps/*"
   ],
+  "scripts": {
+    "build:ui": "bun run --cwd apps/mcp-ui build",
+    "build:server": "bun run --cwd apps/server build",
+    "build:webhook": "bun run --cwd apps/webhook-handler build",
+    "start:ui": "bun run --cwd apps/mcp-ui start",
+    "start:server": "bun run --cwd apps/server start:prod",
+    "start:webhook": "bun run --cwd apps/webhook-handler start"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },
