@@ -1,5 +1,6 @@
 import { makeAutoObservable, runInAction } from 'mobx';
-import { Service, CreateServiceInput, CreateMcpMutation, McpsQuery } from '../client/graphql';
+import { Service, CreateServiceInput, CreateMcpMutation, McpsQuery, StatusUpdatesDocument, StatusUpdatesSubscription } from '../client/graphql';
+import { getClient } from '../client/socket';
 
 export interface McpService extends Omit<Service, "__typename"> {
   // Additional properties can be added here if needed
@@ -14,6 +15,11 @@ export class McpsStore {
   errorsMap = new Map<string, string | null>();
   creatingMcp = false;
   creatingMcpError: string | null = null;
+  
+  // Subscription state
+  subscriptionActive = false;
+  subscriptionError: string | null = null;
+  private subscriptionUnsubscribe: (() => void) | null = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -169,6 +175,86 @@ export class McpsStore {
       runInAction(() => {
         this.setLoadingForService(serviceId, false);
       });
+    }
+  }
+
+  // Subscription state setters
+  setSubscriptionActive(active: boolean) {
+    this.subscriptionActive = active;
+  }
+
+  setSubscriptionError(error: string | null) {
+    this.subscriptionError = error;
+  }
+
+  // Subscription methods
+  startSubscription() {
+    if (this.subscriptionActive) {
+      return;
+    }
+
+    this.setSubscriptionError(null);
+    
+    try {
+      const client = getClient();
+      
+      const unsubscribe = client.subscribe(
+        {
+          query: StatusUpdatesDocument.loc?.source.body || '',
+        },
+        {
+          next: (response: any) => {
+            if (response.data?.serviceStatusUpdates) {
+              const update = response.data.serviceStatusUpdates;
+              
+              runInAction(() => {
+                this.updateMcpStatus(update.serviceId, update.status);
+              });
+            }
+          },
+          error: (error: any) => {
+            runInAction(() => {
+              this.setSubscriptionError(error instanceof Error ? error.message : 'Subscription error');
+              this.setSubscriptionActive(false);
+            });
+          },
+          complete: () => {
+            runInAction(() => {
+              this.setSubscriptionActive(false);
+            });
+          }
+        }
+      );
+
+      this.subscriptionUnsubscribe = unsubscribe;
+      this.setSubscriptionActive(true);
+    } catch (error) {
+      this.setSubscriptionError(error instanceof Error ? error.message : 'Failed to start subscription');
+    }
+  }
+
+  stopSubscription() {
+    if (!this.subscriptionActive || !this.subscriptionUnsubscribe) {
+      return;
+    }
+
+    try {
+      this.subscriptionUnsubscribe();
+      this.subscriptionUnsubscribe = null;
+      this.setSubscriptionActive(false);
+      this.setSubscriptionError(null);
+    } catch (error) {
+      this.setSubscriptionError(error instanceof Error ? error.message : 'Failed to stop subscription');
+    }
+  }
+
+  // Auto-start subscription when MCPs are loaded
+  async loadMcpsWithSubscription(mcpsQuery: () => Promise<McpsQuery>) {
+    await this.loadMcps(mcpsQuery);
+    
+    // Start subscription after successful load
+    if (this.mcps.length > 0 && !this.subscriptionActive) {
+      this.startSubscription();
     }
   }
 }

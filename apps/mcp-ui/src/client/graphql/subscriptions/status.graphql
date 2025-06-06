@@ -1,0 +1,6 @@
+subscription statusUpdates {
+  serviceStatusUpdates {
+    serviceId
+    status
+  }
+}

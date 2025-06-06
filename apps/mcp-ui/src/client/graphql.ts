@@ -112,6 +112,11 @@ export type McpsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type McpsQuery = { __typename?: 'Query', services: Array<{ __typename?: 'Service', serviceId: string, name: string, status: string, githubUrl: string, environmentVariables: any, portNumber: number, domain: string }> };
 
+export type StatusUpdatesSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type StatusUpdatesSubscription = { __typename?: 'Subscription', serviceStatusUpdates: { __typename?: 'ServiceStatus', serviceId: string, status: string } };
+
 
 export const CreateMcpDocument = gql`
     mutation createMcp($input: CreateServiceInput!) {
@@ -148,6 +153,14 @@ export const McpsDocument = gql`
   }
 }
     `;
+export const StatusUpdatesDocument = gql`
+    subscription statusUpdates {
+  serviceStatusUpdates {
+    serviceId
+    status
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string, variables?: any) => Promise<T>;
 
@@ -167,6 +180,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     mcps(variables?: McpsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<McpsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<McpsQuery>({ document: McpsDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'mcps', 'query', variables);
+    },
+    statusUpdates(variables?: StatusUpdatesSubscriptionVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<StatusUpdatesSubscription> {
+      return withWrapper((wrappedRequestHeaders) => client.request<StatusUpdatesSubscription>({ document: StatusUpdatesDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'statusUpdates', 'subscription', variables);
     }
   };
 }
