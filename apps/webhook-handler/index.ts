@@ -24,6 +24,10 @@ server.register((fastify, opts) => {
     })
   })
 
+  fastify.get('/', async (request, reply) => {
+    reply.status(200).send('Webhook Handler is running');
+  });
+
   fastify.post('/', async (request, reply) => {
     if (
       typeof request.body === 'object' &&
@@ -51,7 +55,7 @@ server.register((fastify, opts) => {
   });
 });
 
-console.log(`Starting server.`);
+console.log(`Starting server. Port: ${port}`);
 server.listen({ port }, (err, address) => {
   if (err) {
     console.error(err);
