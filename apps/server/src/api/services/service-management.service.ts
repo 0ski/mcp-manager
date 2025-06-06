@@ -1,11 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { Service, ServiceStatus, CreateServiceInput } from '../types/service.types';
 import { RailwayClientService } from '../../railway-client/services/railway-client.service';
+import { MQEmitterRedis } from 'mqemitter-redis';
+import asyncify from 'callback-to-async-iterator';
 
 @Injectable()
 export class ServiceManagementService {
   constructor(
-    private clientService: RailwayClientService
+    private clientService: RailwayClientService,
+    @Inject('pubsub') private pubSub: MQEmitterRedis
   ) {}
 
   /**
@@ -107,8 +110,32 @@ export class ServiceManagementService {
   /**
    * Get service status updates for subscriptions
    */
-  async getServiceStatusUpdates(): Promise<AsyncIterator<ServiceStatus>> {
-    // TODO: Implement subscription logic for service status updates
-    throw new Error('Not implemented');
+  getServiceStatusUpdates() {
+    const pubSub = this.pubSub;
+
+    // callback will be called with each new message coming from the message queue
+    const listenToNewMessages = (callback) => {
+      const eventHandler = (message: {
+        topic: 'service.update';
+        serviceId: string;
+        status: string;
+      }, done: () => void) => {
+        const serviceStatus: ServiceStatus = {
+          serviceId: message.serviceId,
+          status: message.status,
+        };
+        callback(serviceStatus);
+        done();
+      };
+      
+      pubSub.on('service.update', eventHandler);
+      
+      // Return a Promise that resolves to the cleanup function
+      return Promise.resolve(() => {
+        pubSub.removeListener('service.update', eventHandler);
+      });
+    }
+
+    return asyncify(listenToNewMessages);
   }
 }

@@ -55,7 +55,10 @@ export class ServiceResolver {
    * Subscription: Service status updates
    * Returns ServiceId and Status
    */
-  @Subscription(() => ServiceStatus, { name: 'serviceStatusUpdates' })
+  @Subscription(() => ServiceStatus, {
+    name: 'serviceStatusUpdates',
+    resolve: (status) => ({serviceId: status.serviceId, status: status.status}),
+  })
   async serviceStatusUpdates(): Promise<AsyncIterator<ServiceStatus>> {
     return this.serviceManagementService.getServiceStatusUpdates();
   }

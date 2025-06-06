@@ -5,7 +5,21 @@ import { TypedConfigService } from 'src/typed-config.service';
 import { RailwayClientService } from '../railway-client/services/railway-client.service';
 
 @Module({
-  providers: [TypedConfigService, RailwayClientService, ServiceResolver, ServiceManagementService],
+  providers: [
+    TypedConfigService, 
+    RailwayClientService, 
+    ServiceResolver, 
+    ServiceManagementService,
+    {
+      provide: 'pubsub',
+      useFactory: () => {
+        return require('mqemitter-redis')({
+          port: process.env.REDIS_PORT ? parseInt(process.env.REDIS_PORT, 10) : 6379,
+          host: process.env.REDIS_HOST || 'localhost',
+        });
+      },
+    },
+  ],
   exports: [ServiceManagementService],
 })
 export class ApiModule {}
