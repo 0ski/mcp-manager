@@ -1,6 +1,5 @@
 {
   "name": "mcps",
-  "type": "module",
   "private": true,
   "workspaces": [
     "apps/*"
