@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ServiceResolver } from './resolvers/service.resolver';
 import { ServiceManagementService } from './services/service-management.service';
-import { TypedConfigService } from 'src/typed-config.service';
+import { TypedConfigService } from '../typed-config.service';
 import { RailwayClientService } from '../railway-client/services/railway-client.service';
 
 @Module({

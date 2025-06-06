@@ -2,7 +2,7 @@ import fastify from 'fastify'
 import type { IncomingMessage } from 'http';
 import MQEmitterRedis from 'mqemitter-redis';
 
-const port = process.env.PORT ? parseInt(process.env.PORT) : 3000;
+const port = process.env.PORT ? parseInt(process.env.PORT) : 3002;
 
 const server = fastify();
 

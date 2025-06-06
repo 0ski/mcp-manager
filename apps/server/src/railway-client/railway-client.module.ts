@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { TypedConfigService } from 'src/typed-config.service';
+import { TypedConfigService } from '../typed-config.service';
 import { RailwayClientService } from './services/railway-client.service';
 
 @Module({

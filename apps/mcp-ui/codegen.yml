@@ -1,6 +1,6 @@
 overwrite: true
 schema:
-  - http://localhost:3001/graphql
+  - http://localhost:3000/graphql
 documents: 
   - "src/client/graphql/**/*.graphql"
 generates:

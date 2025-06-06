@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { type Sdk, ServiceCreateInput, getSdk } from 'src/railway-client/generated/graphql';
+import { type Sdk, ServiceCreateInput, getSdk } from '../generated/graphql';
 import { GraphQLClient } from 'graphql-request';
-import { TypedConfigService } from 'src/typed-config.service';
+import { TypedConfigService } from '../../typed-config.service';
 
 @Injectable()
 export class RailwayClientService {

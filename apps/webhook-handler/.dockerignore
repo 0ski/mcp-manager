@@ -1,0 +1,42 @@
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# local env files
+.env*.local
+.env
+
+# typescript
+*.tsbuildinfo
+
+# testing
+coverage
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local development
+.vscode
+.idea
+*.swp
+*.swo
+
+# build output (will be generated during build)
+dist
+
+# logs
+logs
+*.log
+
+# git
+.git
+.gitignore
+README.md
