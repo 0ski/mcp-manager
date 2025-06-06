@@ -6,11 +6,11 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/api/mcps.json',
-        destination: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/mcps.json`,
+        destination: `${process.env.NEXT_PUBLIC_API_URL || 'https://mcp-manager-server-production.up.railway.app'}/mcps.json`,
       },
       {
         source: '/api/graphql',
-        destination: `${process.env.NEXT_PUBLIC_GRAPHQL_API_URL || (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001') + '/graphql'}`,
+        destination: `${process.env.NEXT_PUBLIC_GRAPHQL_API_URL || (process.env.NEXT_PUBLIC_API_URL || 'https://mcp-manager-server-production.up.railway.app') + '/graphql'}`,
       },
     ];
   },
